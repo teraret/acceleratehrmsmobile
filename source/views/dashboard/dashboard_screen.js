@@ -2,6 +2,7 @@ import React from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import Auth from "../../security/auth";
+import dashboardStyle from "./dashboard_style";
 
 function DashboardScreen({ navigation }) {
   const logoutHandler = () => {
@@ -26,15 +27,4 @@ function DashboardScreen({ navigation }) {
   );
 }
 export default DashboardScreen;
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  loginButton: {
-    backgroundColor: "#008000",
-  },
-  registerButton: {
-    backgroundColor: "#FFA500",
-  },
-});
+const styles = StyleSheet.create(dashboardStyle);
