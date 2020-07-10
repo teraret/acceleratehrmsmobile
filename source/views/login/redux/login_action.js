@@ -2,20 +2,25 @@ import { LOGIN, LOGOUT } from "./login_type";
 import axios from "axios";
 import SERVER_URL from "../../../../config";
 import {
-  checkResponseStatus,
   loginResponseHandler,
 } from "../../../handlers/responseHandlers";
+import {
+  checkResponseStatus,
+} from "../../../handlers/checkResponseStatus";
 import Auth from "../../../security/auth";
 
-// const loadRetriveTokkenSuccess = () => {
-//   return {
-//     type: RETRIVE_TOKKEN,
-//   };
-// };
+import AsyncStorage from "@react-native-community/async-storage";
 
-export const loadLoginSuccess = () => {
+const loadRetriveTokkenSuccess = () => {
+  return {
+    type: RETRIVE_TOKKEN,
+  };
+};
+
+export const loadLoginSuccess = (token) => {
   return {
     type: LOGIN,
+    payload: token,
   };
 };
 
@@ -27,21 +32,18 @@ export const loadLogoutSuccess = () => {
 
 const customLoginHandler = () => {};
 
-// export const RetriveTokkenSuccess = () => {
-//   return (dispatch) => {
-//     async () => {
-//       if (await Auth.loggedIn()) {
-//         dispatch(loadLoginSuccess);
-//       } else {
-//         dispatch(loadLogoutSuccess);
-//       }
-//     };
-//   };
-// };
+export const RetriveTokkenSuccess = () => {
+  return (dispatch) => {
+    if (Auth.loggedIn()) {
+      dispatch(loadLoginSuccess);
+    } else {
+      dispatch(loadLogoutSuccess);
+    }
+  };
+};
 
 export const LoginSubmit = (e) => {
   return (dispatch) => {
-    //dispatch(loadLoginSuccess);
     console.log(SERVER_URL + "/api/login");
     axios
       .post(SERVER_URL + "/api/login", {
@@ -49,10 +51,17 @@ export const LoginSubmit = (e) => {
         password: e.password,
       })
       .then(checkResponseStatus)
-      .then((response) => loginResponseHandler(response, customLoginHandler))
-      .then(dispatch(loadLoginSuccess))
-      .catch((error) => console.log(""));
-    //.catch(error => defaultErrorHandler(error, customErrorHandler))
+      .then(async (response) => {
+        try {
+          const jsonValue = null;
+          jsonValue = JSON.stringify(response);
+          await AsyncStorage.setItem("access_token", jsonValue);
+          dispatch(loadLoginSuccess(jsonValue));
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .catch((error) => console.log("The error is " + error));
   };
 };
 

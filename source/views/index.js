@@ -30,34 +30,22 @@ function HomeScreen() {
 
 export default function Index(props) {
   const dispatch = useDispatch();
-  const companydata = useSelector((state) => state.login);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [errors, setErrors] = useState({});
-  console.log("The value " + companydata.loggedIn);
-  //setIsLoading(companydata);
+  const logindata = useSelector((state) => state.login);
+  console.log("The value " + logindata.loggedIn);
 
   useEffect(() => {
     console.log("app mounting...");
-    (async () => {
-      if (await Auth.loggedIn()) {
-        dispatch(loadLoginSuccess);
-      } else {
-        dispatch(loadLogoutSuccess);
-      }
-    })();
   });
 
   return (
     <NavigationContainer>
-      {companydata.loggedIn ? (
+      {/* {logindata.loggedIn ? ( */}
         <Drawer.Navigator>
           <Drawer.Screen name="DashboardScreen" component={DashboardScreen} />
         </Drawer.Navigator>
-      ) : (
-        <HomeScreen />
-      )}
+       {/* ) : (
+         <HomeScreen />
+       )} */}
     </NavigationContainer>
   );
 }
