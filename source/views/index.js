@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import Auth from "../security/auth";
 import { useSelector, useDispatch } from "react-redux";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+import Auth from "../security/auth";
+
 import WelcomeScreen from "./welcome/welcome_page";
 import LoginScreen from "./login/login_page";
 import RegisterScreen from "./register/register_page";
 import DashboardScreen from "./dashboard/dashboard_screen";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import EmployeeList from "./employee/employe_list/employee_list";
+
 
 import {
   logoutHandler,
@@ -42,6 +47,8 @@ export default function Index(props) {
       {/* {logindata.loggedIn ? ( */}
         <Drawer.Navigator>
           <Drawer.Screen name="DashboardScreen" component={DashboardScreen} />
+          <Drawer.Screen name="Employee List" component={EmployeeList} />
+
         </Drawer.Navigator>
        {/* ) : (
          <HomeScreen />
